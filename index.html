@@ -1,557 +1,626 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Java Concepts Quiz</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 Strong</title>
     <!-- Load Tailwind CSS from CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-      body {
-        font-family: "Inter", sans-serif;
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
-        animation: gradientFlow 15s ease infinite;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-      }
-      @keyframes gradientFlow {
-        0% {
-          background-position: 0% 50%;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        50% {
-          background-position: 100% 50%;
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        100% {
-          background-position: 0% 50%;
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
-      }
-      .glassmorphism {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      }
-      .submit-button {
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(5px);
-        transition: all 0.3s ease;
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-      }
-      .submit-button:hover {
-        background: rgba(255, 255, 255, 0.5);
-      }
-      .float-animation {
-        animation: float 3s ease-in-out infinite;
-      }
-      @keyframes float {
-        0% {
-          transform: translateY(0px);
+        .submit-button {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-        50% {
-          transform: translateY(-10px);
+        .submit-button:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
-        100% {
-          transform: translateY(0px);
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
         }
-      }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
 
-      .sphere-button {
-        position: absolute;
-        z-index: 20;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-      }
-      .sphere-button:hover {
-        background: rgba(255, 255, 0, 0.4);
-      }
-      #ball-container {
-        position: relative;
-        width: 250px;
-        height: 400px;
-        border-radius: 16px;
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-      }
+        .sphere-button {
+            position: absolute;
+            z-index: 20;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .sphere-button:hover {
+            background: rgba(255, 255, 0, 0.4);
+        }
+        #ball-container {
+            position: relative;
+            width: 100%;
+            min-height: 200px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
     </style>
-  </head>
-  <body class="p-4">
+</head>
+<body class="p-4">
+
     <!-- Start Screen Modal -->
-    <div
-      id="start-modal"
-      class="fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
-    >
-      <div
-        class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
-      >
-        <h2 class="text-4xl font-bold mb-4">Java Concepts Quiz</h2>
-        <p class="text-lg mb-6">Enter your name to start the quiz!</p>
-        <input
-          type="text"
-          id="name-input"
-          placeholder="Your Name"
-          class="w-full p-2 mb-4 rounded-md glassmorphism text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white"
-        />
-        <button
-          id="start-button"
-          class="w-32 h-12 rounded-full submit-button shadow-xl flex items-center justify-center text-center text-base font-bold"
-        >
-          Start Quiz
-        </button>
-      </div>
+    <div id="start-modal" class="fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70">
+        <div class="glassmorphism text-white p-8 max-w-lg w-full text-center relative">
+            <h2 class="text-4xl font-bold mb-4">8 Strong</h2>
+            <p class="text-lg mb-6">Enter your name to start the quiz!</p>
+            <input type="text" id="name-input" placeholder="Your Name" class="w-full p-2 mb-4 rounded-md glassmorphism text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white">
+            <div class="flex justify-center items-center gap-4">
+                <button id="start-button" class="w-32 h-12 rounded-full submit-button shadow-xl flex items-center justify-center text-center text-base font-bold">
+                    Start Quiz
+                </button>
+                <button id="login-button" class="w-32 h-12 rounded-full submit-button shadow-xl flex items-center justify-center text-center text-base font-bold">
+                    Log In
+                </button>
+            </div>
+            <p id="user-display-name" class="mt-4 text-sm hidden"></p>
+        </div>
     </div>
 
     <!-- Main Quiz Container -->
-    <div
-      id="quiz-container"
-      class="glassmorphism text-white p-8 max-w-4xl w-full mx-auto z-10 relative hidden"
-    >
-      <!-- Quiz Header -->
-      <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">Java Quiz</h1>
-        <div class="mt-4 sm:mt-0">
-          <p class="text-lg font-semibold">
-            Current Score: <span id="score-display">0</span>
-          </p>
-          <p class="text-lg font-semibold">
-            Attempts Left: <span id="attempts-display">5</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="mb-6">
-        <div
-          class="glassmorphism text-white p-3 rounded-lg text-center font-bold"
-        >
-          <span id="timer-display">30</span>
-        </div>
-        <p class="text-center text-sm mt-2">Select up to 4 correct answers.</p>
-      </div>
-
-      <div id="quiz-content">
-        <!-- Question and Choices -->
-        <p id="question-text" class="text-xl font-semibold mb-4">
-          Loading question...
-        </p>
-
-        <div class="flex flex-row gap-8 justify-center">
-          <div id="ball-container" class="glassmorphism">
-            <!-- Bouncing spheres will be injected here by JavaScript -->
-          </div>
-
-          <div class="flex-1 self-center">
-            <div class="flex">
-              <div
-                id="answers-container-left"
-                class="flex flex-col gap-2 w-1/2 pr-2"
-              ></div>
-              <div
-                id="answers-container-right"
-                class="flex flex-col gap-2 w-1/2 pl-2"
-              ></div>
+    <div id="quiz-container" class="glassmorphism text-white p-8 max-w-2xl w-full mx-auto z-10 relative hidden">
+        <!-- Quiz Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold">Java Quiz</h1>
+            <div class="mt-4 sm:mt-0">
+                <p class="text-lg font-semibold">Current Score: <span id="score-display">0</span></p>
+                <!-- New display for attempts left -->
+                <p class="text-lg font-semibold">Attempts Left: <span id="attempts-display">5</span></p>
             </div>
-          </div>
         </div>
 
-        <!-- Feedback -->
-        <p id="feedback-text" class="text-center mt-4 text-lg font-medium"></p>
-      </div>
-    </div>
+        <div class="mb-6">
+            <!-- Updated timer bar with limited width -->
+            <div class="glassmorphism text-white p-3 rounded-lg text-center font-bold max-w-xs mx-auto">
+                <span id="timer-display">30</span> seconds remaining
+            </div>
+            <p class="text-center text-sm mt-2">Select up to 4 correct answers.</p>
+        </div>
 
+        <div id="quiz-content">
+            <!-- Question and Choices -->
+            <p id="question-text" class="text-xl font-semibold mb-4">Loading question...</p>
+            
+            <div id="ball-container" class="glassmorphism">
+                <!-- Bouncing spheres will be injected here by JavaScript -->
+            </div>
+
+            <div class="flex">
+                <div id="answers-container-left" class="flex flex-col gap-2 w-1/2 pr-2"></div>
+                <div id="answers-container-right" class="flex flex-col gap-2 w-1/2 pl-2"></div>
+            </div>
+
+            <!-- Feedback -->
+            <p id="feedback-text" class="text-center mt-4 text-lg font-medium"></p>
+        </div>
+    </div>
+    
     <!-- Glassmorphism End Screen Modal -->
-    <div
-      id="end-screen-modal"
-      class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
-    >
-      <div
-        class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
-      >
-        <h2 class="text-4xl font-bold mb-4">Quiz Finished!</h2>
-        <p id="final-score" class="text-2xl mb-2">
-          Final Score: <span class="font-bold">0</span>
-        </p>
-        <p class="text-lg mb-6">
-          Correct Answers: <span id="correct-count" class="font-bold">0</span> |
-          Wrong Answers: <span id="wrong-count" class="font-bold">0</span>
-        </p>
-        <h3 class="text-2xl font-semibold mb-2">High Scores</h3>
-        <ul
-          id="high-scores-list"
-          class="flex flex-wrap justify-center gap-4 list-none text-lg"
-        >
-          <!-- High scores will be displayed here -->
-        </ul>
-        <button
-          id="play-again-button"
-          class="mt-8 w-20 h-20 rounded-full submit-button shadow-xl flex items-center justify-center text-center text-sm font-bold float-animation"
-        >
-          Play Again
-        </button>
-      </div>
+    <div id="end-screen-modal" class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70">
+        <div class="glassmorphism text-white p-8 max-w-lg w-full text-center relative">
+            <h2 class="text-4xl font-bold mb-4">Quiz Finished!</h2>
+            <p id="final-score" class="text-2xl mb-2">Final Score: <span class="font-bold">0</span></p>
+            <p class="text-lg mb-6">Correct Answers: <span id="correct-count" class="font-bold">0</span> | Wrong Answers: <span id="wrong-count" class="font-bold">0</span></p>
+            <h3 class="text-2xl font-semibold mb-2">High Scores</h3>
+            <ul id="high-scores-list" class="flex flex-wrap justify-center gap-4 list-none text-lg">
+                <!-- High scores will be displayed here -->
+            </ul>
+            <button id="play-again-button" class="mt-8 w-20 h-20 rounded-full submit-button shadow-xl flex items-center justify-center text-center text-sm font-bold float-animation">
+                Play Again
+            </button>
+        </div>
+    </div>
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70">
+        <div class="glassmorphism text-white p-8 max-w-lg w-full text-center relative">
+            <h2 class="text-4xl font-bold mb-4">Log In</h2>
+            <input type="text" id="email-input" placeholder="Email" class="w-full p-2 mb-4 rounded-md glassmorphism text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white">
+            <input type="password" id="password-input" placeholder="Password" class="w-full p-2 mb-4 rounded-md glassmorphism text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white">
+            <button id="login-auth-button" class="w-full p-3 mb-2 rounded-md submit-button font-bold">Log In</button>
+            <button id="register-auth-button" class="w-full p-3 rounded-md submit-button font-bold">Register</button>
+            <p id="auth-error-message" class="text-red-400 mt-2"></p>
+            <button id="close-login-modal" class="absolute top-4 right-4 text-white hover:text-gray-300">&times;</button>
+        </div>
     </div>
 
-    <script>
-      // Quiz Data
-      const questions = [
-        "Which of the following are Java primitive data types?",
-        "Which of the following are Java access modifiers?",
-        "Which of the following are valid Java collection classes?",
-        "Which of the following are Java keywords?",
-        "Which of the following are Java exception types?",
-        "Which of the following are Java loop statements?",
-        "Which of the following are Java OOP concepts?",
-      ];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-      const choices = [
-        [
-          "1. int",
-          "2. String",
-          "3. double",
-          "4. boolean",
-          "5. ArrayList",
-          "6. char",
-          "7. float",
-          "8. HashMap",
-        ],
-        [
-          "1. public",
-          "2. private",
-          "3. static",
-          "4. protected",
-          "5. final",
-          "6. abstract",
-          "7. default",
-          "8. synchronized",
-        ],
-        [
-          "1. ArrayList",
-          "2. HashSet",
-          "3. TreeMap",
-          "4. LinkedList",
-          "5. Vector",
-          "6. HashMap",
-          "7. Stack",
-          "8. String",
-        ],
-        [
-          "1. class",
-          "2. import",
-          "3. package",
-          "4. extends",
-          "5. implements",
-          "6. function",
-          "7. interface",
-          "8. throws",
-        ],
-        [
-          "1. NullPointerException",
-          "2. IOException",
-          "3. FileNotFoundException",
-          "4. ArrayIndexOutOfBoundsException",
-          "5. SQLException",
-          "6. InterruptedException",
-          "7. Error",
-          "8. TimeoutException",
-        ],
-        [
-          "1. for",
-          "2. while",
-          "3. do",
-          "4. foreach",
-          "5. loop",
-          "6. switch",
-          "7. if",
-          "8. continue",
-        ],
-        [
-          "1. Inheritance",
-          "2. Polymorphism",
-          "3. Encapsulation",
-          "4. Abstraction",
-          "5. Overloading",
-          "6. Overriding",
-          "7. Compilation",
-          "8. Interface",
-        ],
-      ];
+        // Global variables provided by the Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-      const correctAnswers = [
-        new Set([1, 3, 4, 6]), // int, double, boolean, char
-        new Set([1, 2, 4, 7]), // public, private, protected, default
-        new Set([1, 2, 3, 4]), // ArrayList, HashSet, TreeMap, LinkedList
-        new Set([1, 2, 3, 4]), // class, import, package, extends
-        new Set([1, 2, 3, 4]), // NullPointerException, IOException, FileNotFoundException, ArrayIndexOutOfBoundsException
-        new Set([1, 2, 3]), // for, while, do
-        new Set([1, 2, 3, 4]), // Inheritance, Polymorphism, Encapsulation, Abstraction
-      ];
+        let db, auth;
+        let currentUser = null;
 
-      let highScores = [];
-      let playerName = "";
-      let currentQuestionIndex = 0;
-      let score = 0;
-      let correctAnswersCount = 0;
-      let incorrectAnswersCount = 0;
-      let attemptsLeft = 5;
-      let timerId;
-      let answeredCorrectly = new Set();
-      let answeredForQuestion = new Set();
+        const initFirebase = async () => {
+            if (Object.keys(firebaseConfig).length > 0) {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
 
-      let ballPositions = [];
-      let animationFrameId;
+                // Set up auth state listener
+                onAuthStateChanged(auth, async (user) => {
+                    const userDisplayNameEl = document.getElementById('user-display-name');
+                    if (user) {
+                        currentUser = user;
+                        userDisplayNameEl.textContent = `Logged in as: ${user.email || 'Guest'}`;
+                        userDisplayNameEl.classList.remove('hidden');
+                        document.getElementById('login-button').textContent = "Log Out";
+                    } else {
+                        currentUser = null;
+                        userDisplayNameEl.textContent = '';
+                        userDisplayNameEl.classList.add('hidden');
+                        document.getElementById('login-button').textContent = "Log In";
+                    }
+                });
 
-      // Get DOM elements
-      const startModal = document.getElementById("start-modal");
-      const nameInput = document.getElementById("name-input");
-      const startButton = document.getElementById("start-button");
-      const quizContainer = document.getElementById("quiz-container");
-      const endScreenModal = document.getElementById("end-screen-modal");
-      const questionText = document.getElementById("question-text");
-      const ballContainer = document.getElementById("ball-container");
-      const answersContainerLeft = document.getElementById(
-        "answers-container-left"
-      );
-      const answersContainerRight = document.getElementById(
-        "answers-container-right"
-      );
-      const scoreDisplay = document.getElementById("score-display");
-      const attemptsDisplay = document.getElementById("attempts-display");
-      const feedbackText = document.getElementById("feedback-text");
-      const timerDisplay = document.getElementById("timer-display");
-      const finalScore = document.getElementById("final-score");
-      const correctCountDisplay = document.getElementById("correct-count");
-      const wrongCountDisplay = document.getElementById("wrong-count");
-      const highScoresList = document.getElementById("high-scores-list");
-      const playAgainButton = document.getElementById("play-again-button");
-      const ballSize = 60; // Sphere diameter
+                if (initialAuthToken) {
+                    try {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } catch (error) {
+                        console.error("Error signing in with custom token:", error);
+                        // Fallback to anonymous sign-in if custom token fails
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } else {
+                console.error("Firebase config is not available.");
+            }
+        };
 
-      // Event listener for the start button
-      startButton.addEventListener("click", () => {
-        playerName = nameInput.value.trim();
-        if (playerName === "") {
-          playerName = "Guest";
+        // Quiz Data
+        const questions = [
+            "Which of the following are Java primitive data types?",
+            "Which of the following are Java access modifiers?",
+            "Which of the following are valid Java collection classes?",
+            "Which of the following are Java keywords?",
+            "Which of the following are Java exception types?",
+            "Which of the following are Java loop statements?",
+            "Which of the following are Java OOP concepts?",
+            "Which of the following are valid return types for a Java method?",
+            "What can be passed as arguments to a Java method?",
+            "Which of the following are true about Java arrays?",
+            "Which of the following are valid ways to declare and initialize a Java array?",
+            "What is the correct syntax for a for-each loop in Java?",
+            "Which of the following are purposes of a `break` statement in Java?",
+            "Which of the following are valid Java variable naming conventions?",
+            "What is the difference between `==` and `.equals()` in Java?",
+            "Which of the following are valid `try-catch-finally` block combinations?",
+            "Which of the following are types of polymorphism in Java?",
+            "Which of the following are true about the `final` keyword?",
+            "Which of the following are true about interfaces in Java?",
+            "What is the correct way to handle multiple exceptions in a single `catch` block?",
+            "Which of the following are true about method overloading?"
+        ];
+
+        const choices = [
+            ["int", "String", "double", "boolean", "ArrayList", "char", "float", "HashMap"],
+            ["public", "private", "static", "protected", "final", "abstract", "default", "synchronized"],
+            ["ArrayList", "HashSet", "TreeMap", "LinkedList", "Vector", "HashMap", "Stack", "String"],
+            ["class", "import", "package", "extends", "implements", "function", "interface", "throws"],
+            ["NullPointerException", "IOException", "FileNotFoundException", "ArrayIndexOutOfBoundsException", "SQLException", "InterruptedException", "Error", "TimeoutException"],
+            ["for", "while", "do", "foreach", "loop", "switch", "if", "continue"],
+            ["Inheritance", "Polymorphism", "Encapsulation", "Abstraction", "Overloading", "Overriding", "Compilation", "Interface"],
+            ["void", "int", "method", "String", "class", "double", "boolean", "return"],
+            ["primitive data types", "objects", "arrays", "methods", "references", "void", "classes", "constructors"],
+            ["They are fixed-size.", "They can store multiple data types.", "Elements are accessed by index.", "The first element is at index 0.", "They are dynamic.", "They can be multi-dimensional.", "They are objects.", "They are primitive."],
+            ["int[] myArr = {1, 2, 3};", "int myArr[] = new int[5];", "int myArr = new int[3];", "String[] names = new String[]{\"a\", \"b\"};", "int myArr = {1, 2, 3};", "int[] myArr = new int[];", "int[] myArr = new int[5]{1,2,3};", "int myArr[] = new int[]{1, 2};"],
+            ["for (String s : list) {}", "for (int i=0; i<list.length; i++) {}", "for each(String s in list) {}", "for (String s : list.each) {}", "for each s in list", "for s in list", "for (s : list)", "for (list: s)"],
+            ["To exit a loop.", "To skip the current iteration of a loop.", "To terminate a program.", "To exit a `switch` block.", "To return a value.", "To throw an exception.", "To jump to a labeled statement.", "To continue to the next iteration."],
+            ["camelCase", "PascalCase", "snake_case", "SCREAMING_SNAKE_CASE", "kebab-case", "UPPER_CASE_WITH_UNDERSCORES", "lower_case_with_underscores", "UPPERCASE"],
+            ["`==` compares object references.", "`equals()` compares object content.", "`==` is a method.", "`equals()` is an operator.", "They are the same.", "`==` can be overridden.", "`equals()` is for primitive types.", "`equals()` is a static method."],
+            ["try-catch", "try-catch-finally", "try", "try-finally", "catch", "try-catch-catch", "try-finally-catch", "catch-try"],
+            ["Method Overloading", "Method Overriding", "Abstraction", "Encapsulation", "Inheritance", "Dynamic Polymorphism", "Static Polymorphism", "Method Hiding"],
+            ["It makes a variable a constant.", "It makes a class immutable.", "It prevents a class from being inherited.", "It prevents a method from being overridden.", "It can only be applied to methods.", "It is a type of access modifier.", "It prevents a method from being overloaded.", "It can only be applied to variables."],
+            ["They can contain concrete methods.", "They define a contract for classes.", "They can be instantiated directly.", "A class can implement multiple interfaces.", "All methods in an interface are implicitly public.", "They can be final.", "They are similar to abstract classes.", "They can contain static methods."],
+            ["Using a single `catch` with multiple exception types.", "Using multiple `catch` blocks.", "Using the `throws` keyword.", "Using `|` to separate exception types.", "Using a generic `Exception` type.", "Using a `finally` block.", "Using a `try` block with no `catch`.", "Using a `switch` statement."],
+            ["It allows methods with the same name but different parameters.", "It allows methods with the same name and parameters in a subclass.", "It is an example of compile-time polymorphism.", "It requires a change in return type.", "It is related to inheritance.", "It requires a change in the number or type of parameters.", "It requires a change in access modifier.", "It is an example of runtime polymorphism."]
+        ];
+
+        // Store correct answers as text, not by index
+        const correctAnswers = [
+            new Set(["int", "double", "boolean", "char"]),
+            new Set(["public", "private", "protected", "default"]),
+            new Set(["ArrayList", "HashSet", "TreeMap", "LinkedList"]),
+            new Set(["class", "import", "package", "extends"]),
+            new Set(["NullPointerException", "IOException", "FileNotFoundException", "ArrayIndexOutOfBoundsException"]),
+            new Set(["for", "while", "do"]),
+            new Set(["Inheritance", "Polymorphism", "Encapsulation", "Abstraction"]),
+            new Set(["void", "int", "String", "double"]),
+            new Set(["primitive data types", "objects", "arrays", "references"]),
+            new Set(["They are fixed-size.", "Elements are accessed by index.", "The first element is at index 0.", "They can be multi-dimensional."]),
+            new Set(["int[] myArr = {1, 2, 3};", "int myArr[] = new int[5];", "String[] names = new String[]{\"a\", \"b\"};", "int myArr[] = new int[]{1, 2};"]),
+            new Set(["To exit a loop.", "To terminate a program.", "To exit a `switch` block.", "To jump to a labeled statement."]),
+            new Set(["camelCase", "PascalCase", "SCREAMING_SNAKE_CASE", "UPPER_CASE_WITH_UNDERSCORES"]),
+            new Set(["`==` compares object references.", "`equals()` compares object content."]),
+            new Set(["try-catch", "try-catch-finally", "try-finally", "try-catch-catch"]),
+            new Set(["Method Overloading", "Method Overriding", "Dynamic Polymorphism", "Static Polymorphism"]),
+            new Set(["It makes a variable a constant.", "It prevents a class from being inherited.", "It prevents a method from being overridden."]),
+            new Set(["They define a contract for classes.", "A class can implement multiple interfaces.", "All methods in an interface are implicitly public.", "They can contain static methods."]),
+            new Set(["Using a single `catch` with multiple exception types.", "Using `|` to separate exception types.", "Using a generic `Exception` type."]),
+            new Set(["It allows methods with the same name but different parameters.", "It is an example of compile-time polymorphism.", "It requires a change in the number or type of parameters."])
+        ];
+
+        let playerName = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctAnswersCount = 0;
+        let incorrectAnswersCount = 0;
+        let timerId;
+        let answeredCorrectly = new Set();
+        let answeredForQuestion = new Set();
+        let attemptsLeft = 5;
+
+        let ballPositions = [];
+        let animationFrameId;
+
+        // Get DOM elements
+        const startModal = document.getElementById('start-modal');
+        const loginModal = document.getElementById('login-modal');
+        const nameInput = document.getElementById('name-input');
+        const startButton = document.getElementById('start-button');
+        const loginButton = document.getElementById('login-button');
+        const closeLoginButton = document.getElementById('close-login-modal');
+        const loginAuthButton = document.getElementById('login-auth-button');
+        const registerAuthButton = document.getElementById('register-auth-button');
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const authErrorMessage = document.getElementById('auth-error-message');
+        const quizContainer = document.getElementById('quiz-container');
+        const endScreenModal = document.getElementById('end-screen-modal');
+        const questionText = document.getElementById('question-text');
+        const ballContainer = document.getElementById('ball-container');
+        const answersContainerLeft = document.getElementById('answers-container-left');
+        const answersContainerRight = document.getElementById('answers-container-right');
+        const scoreDisplay = document.getElementById('score-display');
+        const feedbackText = document.getElementById('feedback-text');
+        const timerDisplay = document.getElementById('timer-display');
+        const finalScore = document.getElementById('final-score');
+        const correctCountDisplay = document.getElementById('correct-count');
+        const wrongCountDisplay = document.getElementById('wrong-count');
+        const highScoresList = document.getElementById('high-scores-list');
+        const playAgainButton = document.getElementById('play-again-button');
+        const attemptsDisplay = document.getElementById('attempts-display');
+        const ballSize = 60; // Sphere diameter
+
+        // Function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
-        startModal.classList.add("hidden");
-        quizContainer.classList.remove("hidden");
-        loadQuestion();
-      });
 
-      function loadQuestion() {
-        if (currentQuestionIndex >= questions.length) {
-          endQuiz();
-          return;
-        }
+        // --- Firebase Functions ---
+        const saveHighScoreToFirestore = async (name, finalScore) => {
+            if (!db) {
+                console.error("Firestore not initialized.");
+                return;
+            }
+            try {
+                // High scores are stored in a public collection for a global leaderboard
+                const highScoresCollectionRef = collection(db, `/artifacts/${appId}/public/data/highscores`);
+                await addDoc(highScoresCollectionRef, {
+                    name: name,
+                    score: finalScore,
+                    timestamp: new Date()
+                });
+                console.log("High score saved to Firestore!");
+            } catch (error) {
+                console.error("Error saving high score to Firestore:", error);
+            }
+        };
 
-        // Reset UI for new question
-        feedbackText.textContent = "";
-        ballContainer.innerHTML = "";
-        answersContainerLeft.innerHTML = "";
-        answersContainerRight.innerHTML = "";
-        answeredCorrectly.clear();
-        answeredForQuestion.clear();
-        ballPositions = [];
-        attemptsLeft = 5;
-        if (attemptsDisplay) attemptsDisplay.textContent = attemptsLeft;
+        const loadHighScoresFromFirestore = () => {
+            if (!db) {
+                console.error("Firestore not initialized.");
+                return;
+            }
+            try {
+                const highScoresCollectionRef = collection(db, `/artifacts/${appId}/public/data/highscores`);
+                const q = query(highScoresCollectionRef, orderBy("score", "desc"), limit(5));
 
-        questionText.textContent = questions[currentQuestionIndex];
+                onSnapshot(q, (snapshot) => {
+                    const highScores = snapshot.docs.map(doc => doc.data());
+                    highScoresList.innerHTML = '';
+                    highScores.forEach((s, index) => {
+                        const li = document.createElement('li');
+                        li.textContent = `${index + 1}. ${s.name}: ${s.score} pts`;
+                        li.className = "bg-white/20 p-2 rounded-full flex items-center justify-center text-center text-sm font-bold float-animation w-28";
+                        highScoresList.appendChild(li);
+                    });
+                });
+            } catch (error) {
+                console.error("Error loading high scores from Firestore:", error);
+            }
+        };
 
-        const numChoices = choices[currentQuestionIndex].length;
-        const containerWidth = ballContainer.clientWidth;
-        const containerHeight = ballContainer.clientHeight;
-
-        choices[currentQuestionIndex].forEach((choice, index) => {
-          // Create the floating sphere buttons
-          const button = document.createElement("button");
-          const choiceNumber = choice.split(".")[0];
-          button.textContent = choiceNumber;
-          button.dataset.number = choiceNumber;
-          button.className =
-            "sphere-button w-12 h-12 rounded-full glassmorphism text-gray-900 font-bold flex items-center justify-center text-center text-sm";
-          button.addEventListener("click", handleChoiceClick);
-          ballContainer.appendChild(button);
-
-          // Initialize random position and velocity
-          const x = Math.random() * (containerWidth - ballSize);
-          const y = Math.random() * (containerHeight - ballSize);
-          const vx = (Math.random() - 0.5) * 2; // Random speed from -1 to 1
-          const vy = (Math.random() - 0.5) * 2; // Random speed from -1 to 1
-
-          ballPositions.push({
-            element: button,
-            x,
-            y,
-            vx,
-            vy,
-            radius: ballSize / 2,
-          });
-
-          // Create the static answer text
-          const choiceTextEl = document.createElement("p");
-          choiceTextEl.textContent = choice;
-          choiceTextEl.className = "text-sm";
-
-          if (index < numChoices / 2) {
-            answersContainerLeft.appendChild(choiceTextEl);
-          } else {
-            answersContainerRight.appendChild(choiceTextEl);
-          }
+        // Event listener for the start button
+        startButton.addEventListener('click', () => {
+            playerName = nameInput.value.trim();
+            if (playerName === '') {
+                playerName = currentUser?.email || 'Guest';
+            }
+            startModal.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            loadQuestion();
         });
 
-        startTimer();
-        animateBalls();
-      }
-
-      function animateBalls() {
-        ballPositions.forEach((ball) => {
-          // Update position
-          ball.x += ball.vx;
-          ball.y += ball.vy;
-
-          // Collision detection with container walls
-          const containerWidth = ballContainer.clientWidth;
-          const containerHeight = ballContainer.clientHeight;
-          if (ball.x + ball.radius * 2 > containerWidth || ball.x < 0) {
-            ball.vx *= -1; // Bounce off x-walls
-          }
-          if (ball.y + ball.radius * 2 > containerHeight || ball.y < 0) {
-            ball.vy *= -1; // Bounce off y-walls
-          }
-
-          // Apply new position
-          ball.element.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
+        // Event listeners for the login modal
+        loginButton.addEventListener('click', async () => {
+            if (currentUser && !currentUser.isAnonymous) {
+                await auth.signOut();
+            } else {
+                loginModal.classList.remove('hidden');
+            }
         });
 
-        animationFrameId = requestAnimationFrame(animateBalls);
-      }
+        closeLoginButton.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            authErrorMessage.textContent = '';
+        });
 
-      function handleChoiceClick(event) {
-        const button = event.target;
-        const choiceNumber = parseInt(button.dataset.number);
-        const currentCorrectAnswers = correctAnswers[currentQuestionIndex];
+        loginAuthButton.addEventListener('click', async () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            if (!email || !password) {
+                authErrorMessage.textContent = "Please enter both email and password.";
+                return;
+            }
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                loginModal.classList.add('hidden');
+            } catch (error) {
+                authErrorMessage.textContent = `Login failed: ${error.message}`;
+            }
+        });
 
-        if (answeredForQuestion.has(choiceNumber)) {
-          return;
+        registerAuthButton.addEventListener('click', async () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            if (!email || !password) {
+                authErrorMessage.textContent = "Please enter both email and password.";
+                return;
+            }
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                loginModal.classList.add('hidden');
+            } catch (error) {
+                authErrorMessage.textContent = `Registration failed: ${error.message}`;
+            }
+        });
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                endQuiz();
+                return;
+            }
+
+            // Reset UI for new question
+            feedbackText.textContent = '';
+            ballContainer.innerHTML = '';
+            answersContainerLeft.innerHTML = '';
+            answersContainerRight.innerHTML = '';
+            answeredCorrectly.clear();
+            answeredForQuestion.clear();
+            ballPositions = [];
+            attemptsLeft = 5; // Reset attempts for a new question
+            attemptsDisplay.textContent = attemptsLeft;
+
+            questionText.textContent = questions[currentQuestionIndex];
+            
+            // Shuffle the choices for the current question
+            const shuffledChoices = [...choices[currentQuestionIndex]];
+            shuffleArray(shuffledChoices);
+
+            const numChoices = shuffledChoices.length;
+            const containerWidth = ballContainer.clientWidth;
+            const containerHeight = ballContainer.clientHeight;
+            
+            shuffledChoices.forEach((choice, index) => {
+                // Create the floating sphere buttons
+                const button = document.createElement('button');
+                // Use a counter for the button label instead of the original index
+                button.textContent = index + 1;
+                button.dataset.choice = choice; // Store the actual choice text in a data attribute
+                button.className = "sphere-button w-12 h-12 rounded-full glassmorphism text-gray-900 font-bold flex items-center justify-center text-center text-sm";
+                button.addEventListener('click', handleChoiceClick);
+                ballContainer.appendChild(button);
+
+                // Initialize random position and velocity
+                const x = Math.random() * (containerWidth - ballSize);
+                const y = Math.random() * (containerHeight - ballSize);
+                const vx = (Math.random() - 0.5) * 2; // Random speed from -1 to 1
+                const vy = (Math.random() - 0.5) * 2; // Random speed from -1 to 1
+
+                ballPositions.push({
+                    element: button,
+                    x, y, vx, vy,
+                    radius: ballSize / 2
+                });
+
+                // Create the static answer text
+                const choiceTextEl = document.createElement('p');
+                // Display the choice with its new shuffled number
+                choiceTextEl.textContent = `${index + 1}. ${choice}`;
+                choiceTextEl.className = "text-sm";
+
+                if (index < numChoices / 2) {
+                    answersContainerLeft.appendChild(choiceTextEl);
+                } else {
+                    answersContainerRight.appendChild(choiceTextEl);
+                }
+            });
+
+            startTimer();
+            animateBalls();
         }
-        answeredForQuestion.add(choiceNumber);
 
-        attemptsLeft--;
-        if (attemptsDisplay) attemptsDisplay.textContent = attemptsLeft;
+        function animateBalls() {
+            ballPositions.forEach(ball => {
+                // Update position
+                ball.x += ball.vx;
+                ball.y += ball.vy;
 
-        if (currentCorrectAnswers.has(choiceNumber)) {
-          // Correct Answer
-          button.classList.add("bg-green-500");
-          button.classList.remove("glassmorphism", "text-gray-900");
-          score += 100;
-          correctAnswersCount++;
-          answeredCorrectly.add(choiceNumber);
-        } else {
-          // Incorrect Answer
-          button.classList.add("bg-red-500");
-          button.classList.remove("glassmorphism", "text-gray-900");
-          score -= 100;
-          incorrectAnswersCount++;
+                // Collision detection with container walls
+                const containerWidth = ballContainer.clientWidth;
+                const containerHeight = ballContainer.clientHeight;
+                if (ball.x + ball.radius * 2 > containerWidth || ball.x < 0) {
+                    ball.vx *= -1; // Bounce off x-walls
+                }
+                if (ball.y + ball.radius * 2 > containerHeight || ball.y < 0) {
+                    ball.vy *= -1; // Bounce off y-walls
+                }
+
+                // Apply new position
+                ball.element.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
+            });
+
+            animationFrameId = requestAnimationFrame(animateBalls);
         }
 
-        // Disable button after click
-        button.disabled = true;
-        scoreDisplay.textContent = score;
+        function handleChoiceClick(event) {
+            const button = event.target;
+            const selectedChoice = button.dataset.choice;
+            const currentCorrectAnswers = correctAnswers[currentQuestionIndex];
 
-        // Check if all correct answers have been selected
-        const allCorrectSelected = [...currentCorrectAnswers].every(
-          (answer) =>
-            answeredForQuestion.has(answer) && currentCorrectAnswers.has(answer)
-        );
+            if (answeredForQuestion.has(selectedChoice)) {
+                return;
+            }
 
-        if (
-          allCorrectSelected &&
-          answeredCorrectly.size === currentCorrectAnswers.size
-        ) {
-          feedbackText.textContent = "Correct! You got it all right!";
-          feedbackText.className =
-            "text-center mt-4 text-lg font-medium text-green-400";
-          clearInterval(timerId);
-          cancelAnimationFrame(animationFrameId);
-          setTimeout(nextQuestion, 2000);
-        } else if (attemptsLeft === 0) {
-          clearInterval(timerId);
-          cancelAnimationFrame(animationFrameId);
-          feedbackText.textContent =
-            "No more attempts! The correct answers were: " +
-            [...correctAnswers[currentQuestionIndex]].join(", ");
-          feedbackText.className =
-            "text-center mt-4 text-lg font-medium text-red-400";
-          setTimeout(nextQuestion, 2000);
+            // Decrement attempts and update display
+            attemptsLeft--;
+            attemptsDisplay.textContent = attemptsLeft;
+
+            answeredForQuestion.add(selectedChoice);
+
+            if (currentCorrectAnswers.has(selectedChoice)) {
+                // Correct Answer
+                button.classList.add('bg-green-500');
+                button.classList.remove('glassmorphism', 'text-gray-900');
+                score += 100;
+                correctAnswersCount++;
+                answeredCorrectly.add(selectedChoice);
+            } else {
+                // Incorrect Answer
+                button.classList.add('bg-red-500');
+                button.classList.remove('glassmorphism', 'text-gray-900');
+                score -= 100;
+                incorrectAnswersCount++;
+            }
+
+            // Disable button after click
+            button.disabled = true;
+            scoreDisplay.textContent = score;
+
+            // Check if all correct answers have been selected or if attempts are exhausted
+            const allCorrectSelected = [...currentCorrectAnswers].every(answer => answeredForQuestion.has(answer));
+            
+            if ((allCorrectSelected && answeredCorrectly.size === currentCorrectAnswers.size) || attemptsLeft <= 0) {
+                // Determine feedback message
+                if (allCorrectSelected && answeredCorrectly.size === currentCorrectAnswers.size) {
+                    feedbackText.textContent = "Correct! You got it all right!";
+                    feedbackText.className = "text-center mt-4 text-lg font-medium text-green-400";
+                } else {
+                    feedbackText.textContent = "You ran out of attempts! The correct answers were: " + [...currentCorrectAnswers].join(', ');
+                    feedbackText.className = "text-center mt-4 text-lg font-medium text-red-400";
+                }
+                clearInterval(timerId);
+                cancelAnimationFrame(animationFrameId);
+                setTimeout(nextQuestion, 2000);
+            }
         }
-      }
 
-      function startTimer() {
-        clearInterval(timerId);
-        let timeLeft = 30;
-        timerDisplay.textContent = timeLeft;
+        function startTimer() {
+            let timeLeft = 30;
+            timerDisplay.textContent = timeLeft;
 
-        timerId = setInterval(() => {
-          timeLeft--;
-          timerDisplay.textContent = timeLeft;
-          if (timeLeft <= 0) {
-            clearInterval(timerId);
+            timerId = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    cancelAnimationFrame(animationFrameId);
+                    feedbackText.textContent = "Time's up! The correct answers were: " + [...correctAnswers[currentQuestionIndex]].join(', ');
+                    feedbackText.className = "text-center mt-4 text-lg font-medium text-red-400";
+                    setTimeout(nextQuestion, 2000);
+                }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function endQuiz() {
             cancelAnimationFrame(animationFrameId);
-            feedbackText.textContent =
-              "Time's up! The correct answers were: " +
-              [...correctAnswers[currentQuestionIndex]].join(", ");
-            feedbackText.className =
-              "text-center mt-4 text-lg font-medium text-red-400";
-            setTimeout(nextQuestion, 2000);
-          }
-        }, 1000);
-      }
+            endScreenModal.classList.remove('hidden');
 
-      function nextQuestion() {
-        currentQuestionIndex++;
-        loadQuestion();
-      }
+            finalScore.querySelector('span').textContent = score;
+            correctCountDisplay.textContent = correctAnswersCount;
+            wrongCountDisplay.textContent = incorrectAnswersCount;
+            
+            // Save the high score to Firestore
+            saveHighScoreToFirestore(playerName, score);
+            
+            // Load and display the global high scores
+            loadHighScoresFromFirestore();
+        }
+        
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            correctAnswersCount = 0;
+            incorrectAnswersCount = 0;
+            scoreDisplay.textContent = score;
+            endScreenModal.classList.add('hidden');
+            loadQuestion();
+        }
 
-      function endQuiz() {
-        cancelAnimationFrame(animationFrameId);
-        endScreenModal.classList.remove("hidden");
+        // Add event listeners
+        playAgainButton.addEventListener('click', restartQuiz);
 
-        finalScore.querySelector("span").textContent = score;
-        correctCountDisplay.textContent = correctAnswersCount;
-        wrongCountDisplay.textContent = incorrectAnswersCount;
-
-        // Update high scores and display them
-        highScores.push({ name: playerName, score: score });
-        highScores.sort((a, b) => b.score - a.score);
-        highScores = highScores.slice(0, 5);
-
-        highScoresList.innerHTML = "";
-        highScores.forEach((s, index) => {
-          const li = document.createElement("li");
-          li.textContent = `${index + 1}. ${s.name}: ${s.score} pts`;
-          li.className =
-            "bg-white/20 p-2 rounded-full flex items-center justify-center text-center text-sm font-bold float-animation w-28";
-          highScoresList.appendChild(li);
-        });
-      }
-
-      function restartQuiz() {
-        currentQuestionIndex = 0;
-        score = 0;
-        correctAnswersCount = 0;
-        incorrectAnswersCount = 0;
-        scoreDisplay.textContent = score;
-        endScreenModal.classList.add("hidden");
-        loadQuestion();
-      }
-
-      // Add event listeners
-      playAgainButton.addEventListener("click", restartQuiz);
+        // Initialize Firebase when the script loads
+        initFirebase();
     </script>
-  </body>
+</body>
 </html>
