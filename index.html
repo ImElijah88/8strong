@@ -90,7 +90,7 @@
   <body class="p-4">
     <!-- MODAL CONTAINER -->
     <div id="modal-container">
-        <!-- Original Start Screen Modal (now for guests) -->
+        <!-- Guest Modal -->
         <div id="guest-modal" class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70">
             <div class="glassmorphism text-white p-8 max-w-lg w-full text-center relative">
                 <h2 class="text-4xl font-bold mb-4">Welcome, Guest!</h2>
@@ -153,6 +153,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- Pause Modal -->
+        <div id="pause-modal" class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70">
+            <div class="glassmorphism text-white p-8 max-w-lg w-full text-center relative">
+                <h2 class="text-4xl font-bold mb-4">Paused</h2>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                   <button id="resume-button" class="flex-1 p-3 rounded-lg submit-button font-bold">Resume</button>
+                   <button id="exit-from-pause-button" class="flex-1 p-3 rounded-lg submit-button font-bold">Exit Quiz</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -167,7 +178,11 @@
         <div class="mt-4 sm:mt-0 text-right">
           <p class="text-lg font-semibold">Score: <span id="score-display">0</span></p>
           <p class="text-lg font-semibold">Attempts Left: <span id="attempts-display">5</span></p>
-          <a href="#" id="logout-button" class="text-sm hover:underline hidden">Logout</a>
+          <div class="flex gap-4 mt-2 justify-end">
+            <button id="pause-button" class="text-sm hover:underline">Pause</button>
+            <button id="exit-button" class="text-sm hover:underline">Exit</button>
+            <a href="#" id="logout-button" class="text-sm hover:underline hidden">Logout</a>
+          </div>
         </div>
       </div>
 
@@ -253,11 +268,19 @@
       ];
 
       const choices = [
-        [ "int", "String", "double", "boolean", "ArrayList", "char", "float", "HashMap" ],[ "public", "private", "static", "protected", "final", "abstract", "default", "synchronized" ],[ "ArrayList", "HashSet", "TreeMap", "LinkedList", "Vector", "HashMap", "Stack", "String" ],[ "class", "import", "package", "extends", "implements", "function", "interface", "throws" ],[ "NullPointerException", "IOException", "FileNotFoundException", "ArrayIndexOutOfBoundsException", "SQLException", "InterruptedException", "Error", "TimeoutException" ],[ "for", "while", "do-while", "foreach", "loop", "switch", "if", "continue" ],[ "Inheritance", "Polymorphism", "Encapsulation", "Abstraction", "Overloading", "Overriding", "Compilation", "Interface" ],[ "void", "int", "method", "String", "class", "double", "boolean", "return" ],[ "primitive data types", "objects", "arrays", "methods", "references", "void", "classes", "constructors" ],[ "They are fixed-size.", "They can store multiple data types.", "Elements are accessed by index.", "The first element is at index 0.", "They are dynamic.", "They can be multi-dimensional.", "They are objects.", "They are primitive." ],[ "int[] myArr = {1, 2, 3};", "int myArr[] = new int[5];", "int myArr = new int[3];", 'String[] names = new String[]{"a", "b"};', "int myArr = {1, 2, 3};", "int[] myArr = new int[];", "int[] myArr = new int[5]{1,2,3};", "int myArr[] = new int[]{1, 2};" ],[ "length()", "charAt()", "substring()", "equals()", "size()", "append()", "delete()", "get()" ],[ "Platform Independent", "Object-Oriented", "Statically Typed", "Supports Pointers", "Interpreted", "Compiled", "Dynamically Typed", "Functional Programming Language" ],[ "camelCase (variables)", "PascalCase (classes)", "snake_case", "SCREAMING_SNAKE_CASE (constants)", "kebab-case", "UPPER_CASE_WITH_UNDERSCORES", "lower_case_with_underscores", "UPPERCASE" ],[ "`==` compares object references", "`equals()` compares object content", "`==` is a method", "`equals()` is an operator", "`==` compares primitive types by value", "`equals()` can be overridden for logical equality", "`equals()` is for primitive types", "`equals()` is a static method" ],[ "javac (Compiler)", "java (Launcher)", "jar (Archiver)", "javadoc (Doc Generator)", "jdb (Debugger)", "jvisualvm (VisualVM)", "jconsole (JConsole)", "appletviewer" ],[ "Have the same name as the class", "Have no return type", "Can be overloaded", "A default is provided if none is defined", "Can be final", "Are inherited by subclasses", "Can be static", "Must be public" ],[ "A variable's value cannot be reassigned", "A class cannot be subclassed", "A method cannot be overridden" ],[ "Define a contract for classes", "Support multiple inheritance of type", "Can contain static methods", "Can contain default methods" ],[ "Using multiple `catch` blocks", "Using a multi-catch block (with |)", "Catching a common superclass exception", "Re-throwing an exception" ],[ "Methods have the same name but different parameters", "Is an example of compile-time polymorphism", "The number or type of parameters must differ", "Can have different return types" ],
+        [ "int", "String", "double", "boolean", "ArrayList", "char", "float", "HashMap" ],[ "public", "private", "static", "protected", "final", "abstract", "default", "synchronized" ],[ "ArrayList", "HashSet", "TreeMap", "LinkedList", "Vector", "HashMap", "Stack", "String" ],[ "class", "import", "package", "extends", "implements", "function", "interface", "throws" ],[ "NullPointerException", "IOException", "FileNotFoundException", "ArrayIndexOutOfBoundsException", "SQLException", "InterruptedException", "Error", "TimeoutException" ],[ "for", "while", "do-while", "foreach", "loop", "switch", "if", "continue" ],[ "Inheritance", "Polymorphism", "Encapsulation", "Abstraction", "Overloading", "Overriding", "Compilation", "Interface" ],[ "void", "int", "method", "String", "class", "double", "boolean", "return" ],[ "primitive data types", "objects", "arrays", "methods", "references", "void", "classes", "constructors" ],[ "They are fixed-size.", "They can store multiple data types.", "Elements are accessed by index.", "The first element is at index 0.", "They are dynamic.", "They can be multi-dimensional.", "They are objects.", "They are primitive." ],[ "int[] myArr = {1, 2, 3};", "int myArr[] = new int[5];", "int myArr = new int[3];", 'String[] names = new String[]{"a", "b"};', "int myArr = {1, 2, 3};", "int[] myArr = new int[];", "int[] myArr = new int[5]{1,2,3};", "int myArr[] = new int[]{1, 2};" ],[ "length()", "charAt()", "substring()", "equals()", "size()", "append()", "delete()", "get()" ],[ "Platform Independent", "Object-Oriented", "Statically Typed", "Supports Pointers", "Interpreted", "Compiled", "Dynamically Typed", "Functional Programming Language" ],[ "camelCase (variables)", "PascalCase (classes)", "snake_case", "SCREAMING_SNAKE_CASE (constants)", "kebab-case", "UPPER_CASE_WITH_UNDERSCORES", "lower_case_with_underscores", "UPPERCASE" ],[ "`==` compares object references", "`equals()` compares object content", "`==` is a method", "`equals()` is an operator", "`==` compares primitive types by value", "`equals()` can be overridden for logical equality", "`equals()` is for primitive types", "`equals()` is a static method" ],[ "javac (Compiler)", "java (Launcher)", "jar (Archiver)", "javadoc (Doc Generator)", "jdb (Debugger)", "jvisualvm (VisualVM)", "jconsole (JConsole)", "appletviewer" ],[ "Have the same name as the class", "Have no return type", "Can be overloaded", "A default is provided if none is defined", "Can be final", "Are inherited by subclasses", "Can be static", "Must be public" ],
+        [ "A variable's value cannot be reassigned", "A class cannot be subclassed", "A method cannot be overridden", "A parameter cannot be changed within a method", "It can only be applied to methods", "It is a type of access modifier", "It prevents a method from being overloaded", "It can only be applied to variables" ],
+        [ "Define a contract for classes", "Support multiple inheritance of type", "Can contain static methods", "Can contain default methods", "Can be instantiated directly", "Can have instance fields", "Are the same as abstract classes", "Can be marked as final" ],
+        [ "Using multiple `catch` blocks", "Using a multi-catch block (with |)", "Catching a common superclass exception", "Re-throwing an exception", "Ignoring the exception completely", "Using a `switch` statement in a `catch` block", "A `try` block without a `catch` or `finally`", "Using the `assert` keyword" ],
+        [ "Methods have the same name but different parameters", "Is an example of compile-time polymorphism", "The number or type of parameters must differ", "Can have different return types", "Is an example of runtime polymorphism", "Is related to method overriding in subclasses", "Requires a change in access modifier", "Only applies to static methods" ],
       ];
 
       const correctAnswers = [
-        new Set(["int", "double", "boolean", "char"]), new Set(["public", "private", "protected", "default"]), new Set(["ArrayList", "LinkedList", "HashMap", "HashSet"]), new Set(["class", "extends", "implements", "interface"]), new Set(["NullPointerException", "IOException", "ArrayIndexOutOfBoundsException", "SQLException"]), new Set(["for", "while", "do-while"]), new Set(["Inheritance", "Polymorphism", "Encapsulation", "Abstraction"]), new Set(["void", "int", "String", "boolean"]), new Set(["primitive data types", "objects", "arrays", "references"]), new Set(["They are fixed-size.", "Elements are accessed by index.", "The first element is at index 0.", "They are objects."]), new Set(["int[] myArr = {1, 2, 3};", "int myArr[] = new int[5];", 'String[] names = new String[]{"a", "b"};', "int myArr[] = new int[]{1, 2};"]), new Set(["length()", "charAt()", "substring()", "equals()"]), new Set(["Platform Independent", "Object-Oriented", "Statically Typed", "Compiled"]), new Set(["camelCase (variables)", "PascalCase (classes)", "SCREAMING_SNAKE_CASE (constants)"]), new Set(["`==` compares object references", "`equals()` compares object content", "`==` compares primitive types by value", "`equals()` can be overridden for logical equality"]), new Set(["javac (Compiler)", "java (Launcher)", "jar (Archiver)", "javadoc (Doc Generator)"]), new Set(["Have the same name as the class", "Have no return type", "Can be overloaded", "A default is provided if none is defined"]), new Set(["A variable's value cannot be reassigned", "A class cannot be subclassed", "A method cannot be overridden"]), new Set(["Define a contract for classes", "Support multiple inheritance of type", "Can contain static methods", "Can contain default methods"]), new Set(["Using multiple `catch` blocks", "Using a multi-catch block (with |)", "Catching a common superclass exception", "Re-throwing an exception"]), new Set(["Methods have the same name but different parameters", "Is an example of compile-time polymorphism", "The number or type of parameters must differ", "Can have different return types"]),
+        new Set(["Have the same name as the class", "Have no return type", "Can be overloaded", "A default is provided if none is defined"]),
+        new Set(["A variable's value cannot be reassigned", "A class cannot be subclassed", "A method cannot be overridden", "A parameter cannot be changed within a method"]),
+        new Set(["Define a contract for classes", "Support multiple inheritance of type", "Can contain static methods", "Can contain default methods"]),
+        new Set(["Using multiple `catch` blocks", "Using a multi-catch block (with |)", "Catching a common superclass exception", "Re-throwing an exception"]),
+        new Set(["Methods have the same name but different parameters", "Is an example of compile-time polymorphism", "The number or type of parameters must differ", "Can have different return types"]),
       ];
 
       // State variables
@@ -268,6 +291,8 @@
       let correctAnswersCount = 0;
       let incorrectAnswersCount = 0;
       let timerId;
+      let timeLeftOnPause;
+      let isPaused = false;
       let answeredCorrectly = new Set();
       let answeredForQuestion = new Set();
       let attemptsLeft = 5;
@@ -281,10 +306,10 @@
       const loginModal = document.getElementById('login-modal');
       const registerModal = document.getElementById('register-modal');
       const resetModal = document.getElementById('reset-modal');
+      const pauseModal = document.getElementById('pause-modal');
       const quizContainer = document.getElementById('quiz-container');
       const endScreenModal = document.getElementById("end-screen-modal");
       
-      // ... other DOM elements
       const nameInput = document.getElementById("name-input");
       const scoreDisplay = document.getElementById("score-display");
       const attemptsDisplay = document.getElementById("attempts-display");
@@ -301,6 +326,10 @@
       const playAgainButton = document.getElementById("play-again-button");
       const playerNameDisplay = document.getElementById("player-name-display");
       const logoutButton = document.getElementById('logout-button');
+      const pauseButton = document.getElementById('pause-button');
+      const exitButton = document.getElementById('exit-button');
+      const resumeButton = document.getElementById('resume-button');
+      const exitFromPauseButton = document.getElementById('exit-from-pause-button');
 
       // --- AUTH UI LOGIC ---
       function hideAllModals() {
@@ -329,7 +358,6 @@
       document.getElementById('login-back-button').addEventListener('click', (e) => { e.preventDefault(); showModal(welcomeModal); });
       document.getElementById('register-back-button').addEventListener('click', (e) => { e.preventDefault(); showModal(welcomeModal); });
 
-
       // Auth Modal Navigation
       document.getElementById('show-register-link').addEventListener('click', (e) => { e.preventDefault(); showModal(registerModal); });
       document.getElementById('show-login-link').addEventListener('click', (e) => { e.preventDefault(); showModal(loginModal); });
@@ -341,7 +369,6 @@
       const registerError = document.getElementById('register-error');
       const resetMessage = document.getElementById('reset-message');
 
-      // Register
       document.getElementById('register-button').addEventListener('click', () => {
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
@@ -352,31 +379,19 @@
             });
       });
       
-      // Login
       document.getElementById('login-button').addEventListener('click', () => {
           const email = document.getElementById('login-email').value;
           const password = document.getElementById('login-password').value;
           const rememberMe = document.getElementById('remember-me').checked;
-          
           const persistence = rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
-          
           auth.setPersistence(persistence)
-            .then(() => {
-                return auth.signInWithEmailAndPassword(email, password);
-            })
+            .then(() => auth.signInWithEmailAndPassword(email, password))
             .catch(error => {
                 loginError.textContent = error.message;
                 loginError.classList.remove('hidden');
             });
       });
 
-      // Logout
-      logoutButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        auth.signOut();
-      });
-
-      // Password Reset
       document.getElementById('reset-button').addEventListener('click', () => {
         const email = document.getElementById('reset-email').value;
         auth.sendPasswordResetEmail(email)
@@ -390,25 +405,23 @@
             });
       });
       
-      // Auth State Listener
       auth.onAuthStateChanged(user => {
           if (user) {
-              // User is logged in
-              playerName = user.email;
-              hideAllModals();
-              quizContainer.classList.remove('hidden');
+              playerName = user.email.split('@')[0];
               logoutButton.classList.remove('hidden');
-              if (currentQuestionIndex === 0 && score === 0) { // Only start a new game if one isn't in progress
-                loadQuestion(); 
+              if (quizContainer.classList.contains('hidden')) {
+                hideAllModals();
+                quizContainer.classList.remove('hidden');
+                loadQuestion();
               }
           } else {
-              // User is logged out
               playerName = '';
               hideAllModals();
               quizContainer.classList.add('hidden');
               logoutButton.classList.add('hidden');
               showModal(welcomeModal);
-              // Reset quiz state on logout
+              if (animationFrameId) cancelAnimationFrame(animationFrameId);
+              if (timerId) clearInterval(timerId);
               currentQuestionIndex = 0;
               score = 0;
               correctAnswersCount = 0;
@@ -417,8 +430,50 @@
           }
       });
 
+      // --- QUIZ CONTROL LOGIC ---
+      function pauseQuiz() {
+        if (isPaused) return;
+        isPaused = true;
+        cancelAnimationFrame(animationFrameId);
+        clearInterval(timerId);
+        showModal(pauseModal);
+      }
 
-      // --- QUIZ LOGIC ---
+      function resumeQuiz() {
+        if (!isPaused) return;
+        isPaused = false;
+        hideAllModals();
+        quizContainer.classList.remove('hidden');
+        startTimer(timeLeftOnPause);
+        animateBalls();
+      }
+
+      function exitQuiz() {
+          if (auth.currentUser) {
+              auth.signOut();
+          } else {
+              // Manual reset for guests
+              hideAllModals();
+              quizContainer.classList.add('hidden');
+              showModal(welcomeModal);
+              if (animationFrameId) cancelAnimationFrame(animationFrameId);
+              if (timerId) clearInterval(timerId);
+              currentQuestionIndex = 0;
+              score = 0;
+              correctAnswersCount = 0;
+              incorrectAnswersCount = 0;
+              scoreDisplay.textContent = 0;
+          }
+      }
+      
+      pauseButton.addEventListener('click', pauseQuiz);
+      exitButton.addEventListener('click', exitQuiz);
+      resumeButton.addEventListener('click', resumeQuiz);
+      exitFromPauseButton.addEventListener('click', exitQuiz);
+      logoutButton.addEventListener('click', (e) => { e.preventDefault(); auth.signOut(); });
+
+
+      // --- QUIZ GAME LOGIC ---
       function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -432,6 +487,7 @@
           return;
         }
 
+        isPaused = false;
         playerNameDisplay.textContent = playerName;
         feedbackText.textContent = "";
         ballContainer.innerHTML = "";
@@ -482,6 +538,7 @@
       }
 
       function animateBalls() {
+        if (isPaused) return;
         ballPositions.forEach((ball) => {
           ball.x += ball.vx;
           ball.y += ball.vy;
@@ -497,6 +554,7 @@
       }
 
       function handleChoiceClick(event) {
+        if (isPaused) return;
         const button = event.target;
         const selectedChoice = button.dataset.choice;
         const currentCorrectAnswers = correctAnswers[currentQuestionIndex];
@@ -538,11 +596,13 @@
         }
       }
 
-      function startTimer() {
-        let timeLeft = 30;
+      function startTimer(startTime = 30) {
+        let timeLeft = startTime;
         timerDisplay.textContent = timeLeft;
+        
         timerId = setInterval(() => {
           timeLeft--;
+          timeLeftOnPause = timeLeft; // Keep track of time left
           timerDisplay.textContent = timeLeft;
           if (timeLeft <= 0) {
             clearInterval(timerId);
@@ -619,37 +679,6 @@
 
       playAgainButton.addEventListener("click", restartQuiz);
 
-       // A minor fix to ensure the quiz doesn't auto-start on login if a game was already played.
-       auth.onAuthStateChanged(user => {
-          if (user) {
-              playerName = user.email.split('@')[0];
-              logoutButton.classList.remove('hidden');
-
-              // Check if the quiz container is hidden. If so, show it and start the quiz.
-              // This prevents re-starting a quiz if the user just reloads the page while logged in.
-              if (quizContainer.classList.contains('hidden')) {
-                hideAllModals();
-                quizContainer.classList.remove('hidden');
-                loadQuestion();
-              }
-
-          } else {
-              playerName = '';
-              hideAllModals();
-              quizContainer.classList.add('hidden');
-              logoutButton.classList.add('hidden');
-              showModal(welcomeModal);
-
-              // Reset quiz state on logout
-              if (animationFrameId) cancelAnimationFrame(animationFrameId);
-              if (timerId) clearInterval(timerId);
-              currentQuestionIndex = 0;
-              score = 0;
-              correctAnswersCount = 0;
-              incorrectAnswersCount = 0;
-              scoreDisplay.textContent = 0;
-          }
-      });
     </script>
   </body>
 </html>
