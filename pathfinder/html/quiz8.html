@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Java Concepts Quiz</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradientFlow 15s ease infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      @keyframes gradientFlow {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .glassmorphism {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      .submit-button {
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+        transition: all 0.3s ease;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+      .submit-button:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+      .float-animation {
+        animation: float 3s ease-in-out infinite;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .sphere-button {
+        position: absolute;
+        z-index: 20;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+      .sphere-button:hover {
+        background: rgba(255, 255, 0, 0.4);
+      }
+      #ball-container {
+        position: relative;
+        width: 100%;
+        min-height: 200px;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+      }
+      .auth-input {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+    </style>
+  </head>
+  <body class="p-4">
+    <!-- MODAL CONTAINER -->
+    <div id="modal-container">
+      <!-- Guest Modal -->
+      <div
+        id="guest-modal"
+        class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
+      >
+        <div
+          class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
+        >
+          <h2 class="text-4xl font-bold mb-4">Welcome, Guest!</h2>
+          <p class="text-lg mb-6">Enter a name to appear on the leaderboard.</p>
+          <input
+            type="text"
+            id="name-input"
+            placeholder="Your Name"
+            class="w-full p-2 mb-4 rounded-md auth-input text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <button
+            id="start-guest-button"
+            class="w-full p-3 rounded-lg submit-button font-bold"
+          >
+            Start Quiz
+          </button>
+          <a
+            href="#"
+            id="guest-back-button"
+            class="text-sm hover:underline mt-4 inline-block"
+            >Go Back</a
+          >
+        </div>
+      </div>
+
+      <!-- Login Modal -->
+      <div
+        id="login-modal"
+        class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
+      >
+        <div
+          class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
+        >
+          <h2 class="text-4xl font-bold mb-4">Login</h2>
+          <p id="login-error" class="text-red-400 mb-4 hidden"></p>
+          <input
+            type="email"
+            id="login-email"
+            placeholder="Email"
+            class="w-full p-2 mb-4 rounded-md auth-input text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Password"
+            class="w-full p-2 mb-4 rounded-md auth-input text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <div class="flex justify-between items-center mb-4 text-sm">
+            <label class="flex items-center"
+              ><input type="checkbox" id="remember-me" class="mr-2" /> Remember
+              me</label
+            >
+            <a href="#" id="forgot-password-link" class="hover:underline"
+              >Forgot Password?</a
+            >
+          </div>
+          <button
+            id="login-button"
+            class="w-full p-3 mb-4 rounded-lg submit-button font-bold"
+          >
+            Log In
+          </button>
+          <p class="text-sm">
+            Don't have an account?
+            <a
+              href="#"
+              id="show-register-link"
+              class="font-bold hover:underline"
+              >Register</a
+            >
+          </p>
+          <a
+            href="#"
+            id="login-back-button"
+            class="text-sm hover:underline mt-4 inline-block"
+            >Go Back</a
+          >
+        </div>
+      </div>
+
+      <!-- Register Modal -->
+      <div
+        id="register-modal"
+        class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
+      >
+        <div
+          class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
+        >
+          <h2 class="text-4xl font-bold mb-4">Register</h2>
+          <p id="register-error" class="text-red-400 mb-4 hidden"></p>
+          <input
+            type="email"
+            id="register-email"
+            placeholder="Email"
+            class="w-full p-2 mb-4 rounded-md auth-input text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <input
+            type="password"
+            id="register-password"
+            placeholder="Password"
+            class="w-full p-2 mb-4 rounded-md auth-input text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <button
+            id="register-button"
+            class="w-full p-3 mb-4 rounded-lg submit-button font-bold"
+          >
+            Register
+          </button>
+          <p class="text-sm">
+            Already have an account?
+            <a href="#" id="show-login-link" class="font-bold hover:underline"
+              >Login</a
+            >
+          </p>
+          <a
+            href="#"
+            id="register-back-button"
+            class="text-sm hover:underline mt-4 inline-block"
+            >Go Back</a
+          >
+        </div>
+      </div>
+
+      <!-- Password Reset Modal -->
+      <div
+        id="reset-modal"
+        class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
+      >
+        <div
+          class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
+        >
+          <h2 class="text-4xl font-bold mb-4">Reset Password</h2>
+          <p id="reset-message" class="mb-4"></p>
+          <input
+            type="email"
+            id="reset-email"
+            placeholder="Enter your email"
+            class="w-full p-2 mb-4 rounded-md auth-input text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <button
+            id="reset-button"
+            class="w-full p-3 mb-4 rounded-lg submit-button font-bold"
+          >
+            Send Reset Link
+          </button>
+          <a href="#" id="back-to-login-link" class="text-sm hover:underline"
+            >Back to Login</a
+          >
+        </div>
+      </div>
+
+      <!-- Welcome Modal -->
+      <div
+        id="welcome-modal"
+        class="fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
+      >
+        <div
+          class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
+        >
+          <h2 class="text-4xl font-bold mb-4">Java Concepts Quiz</h2>
+          <p class="text-lg mb-6">
+            Log in to save your score or play as a guest!
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              id="welcome-login-button"
+              class="flex-1 p-3 rounded-lg submit-button font-bold"
+            >
+              Login / Register
+            </button>
+            <button
+              id="welcome-guest-button"
+              class="flex-1 p-3 rounded-lg submit-button font-bold"
+            >
+              Play as Guest
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pause Modal -->
+      <div
+        id="pause-modal"
+        class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
+      >
+        <div
+          class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
+        >
+          <h2 class="text-4xl font-bold mb-4">Paused</h2>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              id="resume-button"
+              class="flex-1 p-3 rounded-lg submit-button font-bold"
+            >
+              Resume
+            </button>
+            <button
+              id="exit-from-pause-button"
+              class="flex-1 p-3 rounded-lg submit-button font-bold"
+            >
+              Exit Quiz
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Quiz Container -->
+    <div
+      id="quiz-container"
+      class="glassmorphism text-white p-8 max-w-2xl w-full mx-auto z-10 relative hidden"
+    >
+      <!-- Quiz Header -->
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <div>
+          <h1 class="text-3xl font-bold">Java Quiz</h1>
+          <p>
+            Player: <span id="player-name-display" class="font-bold"></span>
+          </p>
+          <p id="question-counter" class="text-sm mt-1"></p>
+        </div>
+        <div class="mt-4 sm:mt-0 text-right">
+          <p class="text-lg font-semibold">
+            Score: <span id="score-display">0</span>
+          </p>
+          <p class="text-lg font-semibold">
+            Attempts Left: <span id="attempts-display">5</span>
+          </p>
+          <div class="flex gap-4 mt-2 justify-end">
+            <button id="pause-button" class="text-sm hover:underline">
+              Pause
+            </button>
+            <button id="exit-button" class="text-sm hover:underline">
+              Exit
+            </button>
+            <a
+              href="#"
+              id="logout-button"
+              class="text-sm hover:underline hidden"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <!-- Timer bar -->
+        <div
+          class="glassmorphism text-white p-3 rounded-lg text-center font-bold max-w-xs mx-auto"
+        >
+          <span id="timer-display">30</span> seconds remaining
+        </div>
+        <p class="text-center text-sm mt-2">Select up to 4 correct answers.</p>
+      </div>
+
+      <div id="quiz-content">
+        <!-- Question and Choices -->
+        <p id="question-text" class="text-xl font-semibold mb-4">
+          Loading question...
+        </p>
+        <div id="ball-container" class="glassmorphism"></div>
+        <div class="flex">
+          <div
+            id="answers-container-left"
+            class="flex flex-col gap-2 w-1/2 pr-2"
+          ></div>
+          <div
+            id="answers-container-right"
+            class="flex flex-col gap-2 w-1/2 pl-2"
+          ></div>
+        </div>
+        <!-- Feedback -->
+        <p id="feedback-text" class="text-center mt-4 text-lg font-medium"></p>
+      </div>
+    </div>
+
+    <!-- End Screen Modal -->
+    <div
+      id="end-screen-modal"
+      class="hidden fixed inset-0 flex items-center justify-center p-4 z-50 bg-gray-800 bg-opacity-70"
+    >
+      <div
+        class="glassmorphism text-white p-8 max-w-lg w-full text-center relative"
+      >
+        <h2 class="text-4xl font-bold mb-4">Quiz Finished!</h2>
+        <p id="final-score" class="text-2xl mb-2">
+          Final Score: <span class="font-bold">0</span>
+        </p>
+        <p class="text-lg mb-6">
+          Correct: <span id="correct-count" class="font-bold">0</span> | Wrong:
+          <span id="wrong-count" class="font-bold">0</span>
+        </p>
+        <h3 class="text-2xl font-semibold mb-2">High Scores</h3>
+        <ul
+          id="high-scores-list"
+          class="flex flex-wrap justify-center gap-4 list-none text-lg"
+        ></ul>
+        <button
+          id="play-again-button"
+          class="mt-8 w-20 h-20 rounded-full submit-button shadow-xl flex items-center justify-center text-center text-sm font-bold float-animation"
+        >
+          Play Again
+        </button>
+      </div>
+    </div>
+
+    <!-- Add Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyA092StteALzD4R7RkX7_164K1cSu6LMm0",
+        authDomain: "strong-94064.firebaseapp.com",
+        projectId: "strong-94064",
+        storageBucket: "strong-94064.appspot.com",
+        messagingSenderId: "693079251399",
+        appId: "1:693079251399:web:e39a1550101e4f2c84e1e2",
+        measurementId: "G-61DP99HJZE",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+
+      // Quiz Data (questions, choices, correctAnswers are unchanged)
+      const questions = [
+        "Which of the following are Java primitive data types?", // Q1
+        "Which of the following are Java access modifiers?", // Q2
+        "Which of the following are common Java Collection classes?", // Q3
+        "Which of the following are Java keywords?", // Q4
+        "Which of the following are common Java Exception types?", // Q5
+        "Which of the following are Java loop statements?", // Q6
+        "Which of the following are core Java OOP concepts?", // Q7
+        "Which of the following are valid return types for a Java method?", // Q8
+        "What can be passed as arguments to a Java method?", // Q9
+        "Which of the following are true about Java arrays?", // Q10
+        "Which of the following are valid ways to declare and initialize a Java array?", // Q11
+        "Which are valid methods of the `java.lang.String` class?", // Q12 (New)
+        "Which of the following are features of the Java language?", // Q13 (New)
+        "Which of the following are standard Java naming conventions?", // Q14
+        "What is the difference between `==` and `.equals()` in Java?", // Q15
+        "Which are components of the Java Development Kit (JDK)?", // Q16 (New)
+        "Which of the following are true about Java constructors?", // Q17 (New)
+        "Which of the following are true about the `final` keyword in Java?", // Q18
+        "Which of the following are true about Java interfaces?", // Q19
+        "Which of these are valid ways to handle exceptions in Java?", // Q20
+        "Which of the following are true about method overloading in Java?", // Q21
+      ];
+
+      const choices = [
+        [
+          "int",
+          "String",
+          "double",
+          "boolean",
+          "ArrayList",
+          "char",
+          "float",
+          "HashMap",
+        ],
+        [
+          "public",
+          "private",
+          "static",
+          "protected",
+          "final",
+          "abstract",
+          "default",
+          "synchronized",
+        ],
+        [
+          "ArrayList",
+          "HashSet",
+          "TreeMap",
+          "LinkedList",
+          "Vector",
+          "HashMap",
+          "Stack",
+          "String",
+        ],
+        [
+          "class",
+          "import",
+          "package",
+          "extends",
+          "implements",
+          "function",
+          "interface",
+          "throws",
+        ],
+        [
+          "NullPointerException",
+          "IOException",
+          "FileNotFoundException",
+          "ArrayIndexOutOfBoundsException",
+          "SQLException",
+          "InterruptedException",
+          "Error",
+          "TimeoutException",
+        ],
+        [
+          "for",
+          "while",
+          "do-while",
+          "foreach",
+          "loop",
+          "switch",
+          "if",
+          "continue",
+        ],
+        [
+          "Inheritance",
+          "Polymorphism",
+          "Encapsulation",
+          "Abstraction",
+          "Overloading",
+          "Overriding",
+          "Compilation",
+          "Interface",
+        ],
+        [
+          "void",
+          "int",
+          "method",
+          "String",
+          "class",
+          "double",
+          "boolean",
+          "return",
+        ],
+        [
+          "primitive data types",
+          "objects",
+          "arrays",
+          "methods",
+          "references",
+          "void",
+          "classes",
+          "constructors",
+        ],
+        [
+          "They are fixed-size.",
+          "They can store multiple data types.",
+          "Elements are accessed by index.",
+          "The first element is at index 0.",
+          "They are dynamic.",
+          "They can be multi-dimensional.",
+          "They are objects.",
+          "They are primitive.",
+        ],
+        [
+          "int[] myArr = {1, 2, 3};",
+          "int myArr[] = new int[5];",
+          "int myArr = new int[3];",
+          'String[] names = new String[]{"a", "b"};',
+          "int myArr = {1, 2, 3};",
+          "int[] myArr = new int[];",
+          "int[] myArr = new int[5]{1,2,3};",
+          "int myArr[] = new int[]{1, 2};",
+        ],
+        [
+          "length()",
+          "charAt()",
+          "substring()",
+          "equals()",
+          "size()",
+          "append()",
+          "delete()",
+          "get()",
+        ],
+        [
+          "Platform Independent",
+          "Object-Oriented",
+          "Statically Typed",
+          "Supports Pointers",
+          "Interpreted",
+          "Compiled",
+          "Dynamically Typed",
+          "Functional Programming Language",
+        ],
+        [
+          "camelCase (variables)",
+          "PascalCase (classes)",
+          "snake_case",
+          "SCREAMING_SNAKE_CASE (constants)",
+          "kebab-case",
+          "UPPER_CASE_WITH_UNDERSCORES",
+          "lower_case_with_underscores",
+          "UPPERCASE",
+        ],
+        [
+          "`==` compares object references",
+          "`equals()` compares object content",
+          "`==` is a method",
+          "`equals()` is an operator",
+          "`==` compares primitive types by value",
+          "`equals()` can be overridden for logical equality",
+          "`equals()` is for primitive types",
+          "`equals()` is a static method",
+        ],
+        [
+          "javac (Compiler)",
+          "java (Launcher)",
+          "jar (Archiver)",
+          "javadoc (Doc Generator)",
+          "jdb (Debugger)",
+          "jvisualvm (VisualVM)",
+          "jconsole (JConsole)",
+          "appletviewer",
+        ],
+        [
+          "Have the same name as the class",
+          "Have no return type",
+          "Can be overloaded",
+          "A default is provided if none is defined",
+          "Can be final",
+          "Are inherited by subclasses",
+          "Can be static",
+          "Must be public",
+        ],
+        [
+          "A variable's value cannot be reassigned",
+          "A class cannot be subclassed",
+          "A method cannot be overridden",
+          "A parameter cannot be changed within a method",
+          "It can only be applied to methods",
+          "It is a type of access modifier",
+          "It prevents a method from being overloaded",
+          "It can only be applied to variables",
+        ],
+        [
+          "Define a contract for classes",
+          "Support multiple inheritance of type",
+          "Can contain static methods",
+          "Can contain default methods",
+          "Can be instantiated directly",
+          "Can have instance fields",
+          "Are the same as abstract classes",
+          "Can be marked as final",
+        ],
+        [
+          "Using multiple `catch` blocks",
+          "Using a multi-catch block (with |)",
+          "Catching a common superclass exception",
+          "Re-throwing an exception",
+          "Ignoring the exception completely",
+          "Using a `switch` statement in a `catch` block",
+          "A `try` block without a `catch` or `finally`",
+          "Using the `assert` keyword",
+        ],
+        [
+          "Methods have the same name but different parameters",
+          "Is an example of compile-time polymorphism",
+          "The number or type of parameters must differ",
+          "Can have different return types",
+          "Is an example of runtime polymorphism",
+          "Is related to method overriding in subclasses",
+          "Requires a change in access modifier",
+          "Only applies to static methods",
+        ],
+      ];
+
+      const correctAnswers = [
+        new Set(["int", "double", "boolean", "char", "float"]),
+        new Set(["public", "private", "protected", "default"]),
+        new Set(["ArrayList", "HashSet", "TreeMap", "LinkedList", "Vector", "HashMap", "Stack"]),
+        new Set(["class", "import", "package", "extends", "implements", "interface", "throws"]),
+        new Set(["NullPointerException", "IOException", "FileNotFoundException", "ArrayIndexOutOfBoundsException", "SQLException", "InterruptedException"]),
+        new Set(["for", "while", "do-while", "foreach"]),
+        new Set(["Inheritance", "Polymorphism", "Encapsulation", "Abstraction"]),
+        new Set(["void", "int", "String", "double", "boolean"]),
+        new Set(["primitive data types", "objects", "arrays"]),
+        new Set(["They are fixed-size.", "Elements are accessed by index.", "The first element is at index 0.", "They can be multi-dimensional.", "They are objects."]),
+        new Set(["int[] myArr = {1, 2, 3};", "int myArr[] = new int[5];", 'String[] names = new String[]{"a", "b"};', "int myArr[] = new int[]{1, 2};"]),
+        new Set(["length()", "charAt()", "substring()", "equals()"]),
+        new Set(["Platform Independent", "Object-Oriented", "Statically Typed", "Compiled", "Interpreted"]),
+        new Set(["camelCase (variables)", "PascalCase (classes)", "SCREAMING_SNAKE_CASE (constants)"]),
+        new Set(["`==` compares object references", "`equals()` compares object content", "`==` compares primitive types by value", "`equals()` can be overridden for logical equality"]),
+        new Set(["javac (Compiler)", "java (Launcher)", "jar (Archiver)", "javadoc (Doc Generator)", "jdb (Debugger)", "jvisualvm (VisualVM)", "jconsole (JConsole)"]),
+        new Set([
+          "Have the same name as the class",
+          "Have no return type",
+          "Can be overloaded",
+          "A default is provided if none is defined",
+        ]),
+        new Set([
+          "A variable's value cannot be reassigned",
+          "A class cannot be subclassed",
+          "A method cannot be overridden",
+          "A parameter cannot be changed within a method",
+        ]),
+        new Set([
+          "Define a contract for classes",
+          "Support multiple inheritance of type",
+          "Can contain static methods",
+          "Can contain default methods",
+        ]),
+        new Set([
+          "Using multiple `catch` blocks",
+          "Using a multi-catch block (with |)",
+          "Catching a common superclass exception",
+          "Re-throwing an exception",
+        ]),
+        new Set([
+          "Methods have the same name but different parameters",
+          "Is an example of compile-time polymorphism",
+          "The number or type of parameters must differ",
+          "Can have different return types",
+        ]),
+      ];
+
+      // State variables
+      let highScores = [];
+      let playerName = "";
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let correctAnswersCount = 0;
+      let incorrectAnswersCount = 0;
+      let timerId;
+      let timeLeftOnPause;
+      let isPaused = false;
+      let answeredCorrectly = new Set();
+      let answeredForQuestion = new Set();
+      let attemptsLeft = 5;
+      let ballPositions = [];
+      let animationFrameId;
+
+      // DOM Elements
+      const allModals = document.querySelectorAll(".fixed");
+      const welcomeModal = document.getElementById("welcome-modal");
+      const guestModal = document.getElementById("guest-modal");
+      const loginModal = document.getElementById("login-modal");
+      const registerModal = document.getElementById("register-modal");
+      const resetModal = document.getElementById("reset-modal");
+      const pauseModal = document.getElementById("pause-modal");
+      const quizContainer = document.getElementById("quiz-container");
+      const endScreenModal = document.getElementById("end-screen-modal");
+
+      const nameInput = document.getElementById("name-input");
+      const scoreDisplay = document.getElementById("score-display");
+      const attemptsDisplay = document.getElementById("attempts-display");
+      const questionText = document.getElementById("question-text");
+      const ballContainer = document.getElementById("ball-container");
+      const answersContainerLeft = document.getElementById(
+        "answers-container-left"
+      );
+      const answersContainerRight = document.getElementById(
+        "answers-container-right"
+      );
+      const timerDisplay = document.getElementById("timer-display");
+      const feedbackText = document.getElementById("feedback-text");
+      const finalScore = document.getElementById("final-score");
+      const correctCountDisplay = document.getElementById("correct-count");
+      const wrongCountDisplay = document.getElementById("wrong-count");
+      const highScoresList = document.getElementById("high-scores-list");
+      const playAgainButton = document.getElementById("play-again-button");
+      const playerNameDisplay = document.getElementById("player-name-display");
+      const logoutButton = document.getElementById("logout-button");
+      const pauseButton = document.getElementById("pause-button");
+      const exitButton = document.getElementById("exit-button");
+      const resumeButton = document.getElementById("resume-button");
+      const exitFromPauseButton = document.getElementById(
+        "exit-from-pause-button"
+      );
+
+      // --- AUTH UI LOGIC ---
+      function hideAllModals() {
+        allModals.forEach((modal) => modal.classList.add("hidden"));
+      }
+
+      function showModal(modal) {
+        hideAllModals();
+        modal.classList.remove("hidden");
+      }
+
+      // Welcome Modal Buttons
+      document
+        .getElementById("welcome-login-button")
+        .addEventListener("click", () => showModal(loginModal));
+      document
+        .getElementById("welcome-guest-button")
+        .addEventListener("click", () => showModal(guestModal));
+
+      // Guest Modal Button
+      document
+        .getElementById("start-guest-button")
+        .addEventListener("click", () => {
+          playerName = nameInput.value.trim() || "Guest";
+          hideAllModals();
+          quizContainer.classList.remove("hidden");
+          loadQuestion();
+        });
+
+      // Back Buttons
+      document
+        .getElementById("guest-back-button")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          showModal(welcomeModal);
+        });
+      document
+        .getElementById("login-back-button")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          showModal(welcomeModal);
+        });
+      document
+        .getElementById("register-back-button")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          showModal(welcomeModal);
+        });
+
+      // Auth Modal Navigation
+      document
+        .getElementById("show-register-link")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          showModal(registerModal);
+        });
+      document
+        .getElementById("show-login-link")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          showModal(loginModal);
+        });
+      document
+        .getElementById("forgot-password-link")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          showModal(resetModal);
+        });
+      document
+        .getElementById("back-to-login-link")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          showModal(loginModal);
+        });
+
+      // --- FIREBASE AUTH LOGIC ---
+      const loginError = document.getElementById("login-error");
+      const registerError = document.getElementById("register-error");
+      const resetMessage = document.getElementById("reset-message");
+
+      document
+        .getElementById("register-button")
+        .addEventListener("click", () => {
+          const email = document.getElementById("register-email").value;
+          const password = document.getElementById("register-password").value;
+          auth
+            .createUserWithEmailAndPassword(email, password)
+            .catch((error) => {
+              registerError.textContent = error.message;
+              registerError.classList.remove("hidden");
+            });
+        });
+
+      document.getElementById("login-button").addEventListener("click", () => {
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        const rememberMe = document.getElementById("remember-me").checked;
+        const persistence = rememberMe
+          ? firebase.auth.Auth.Persistence.LOCAL
+          : firebase.auth.Auth.Persistence.SESSION;
+        auth
+          .setPersistence(persistence)
+          .then(() => auth.signInWithEmailAndPassword(email, password))
+          .catch((error) => {
+            loginError.textContent = error.message;
+            loginError.classList.remove("hidden");
+          });
+      });
+
+      document.getElementById("reset-button").addEventListener("click", () => {
+        const email = document.getElementById("reset-email").value;
+        auth
+          .sendPasswordResetEmail(email)
+          .then(() => {
+            resetMessage.textContent = "Password reset email sent!";
+            resetMessage.className = "mb-4 text-green-400";
+          })
+          .catch((error) => {
+            resetMessage.textContent = error.message;
+            resetMessage.className = "mb-4 text-red-400";
+          });
+      });
+
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          playerName = user.email.split("@")[0];
+          logoutButton.classList.remove("hidden");
+          if (quizContainer.classList.contains("hidden")) {
+            hideAllModals();
+            quizContainer.classList.remove("hidden");
+            loadQuestion();
+          }
+        } else {
+          playerName = "";
+          hideAllModals();
+          quizContainer.classList.add("hidden");
+          logoutButton.classList.add("hidden");
+          showModal(welcomeModal);
+          if (animationFrameId) cancelAnimationFrame(animationFrameId);
+          if (timerId) clearInterval(timerId);
+          currentQuestionIndex = 0;
+          score = 0;
+          correctAnswersCount = 0;
+          incorrectAnswersCount = 0;
+          scoreDisplay.textContent = 0;
+        }
+      });
+
+      // --- QUIZ CONTROL LOGIC ---
+      function pauseQuiz() {
+        if (isPaused) return;
+        isPaused = true;
+        cancelAnimationFrame(animationFrameId);
+        clearInterval(timerId);
+        showModal(pauseModal);
+      }
+
+      function resumeQuiz() {
+        if (!isPaused) return;
+        isPaused = false;
+        hideAllModals();
+        quizContainer.classList.remove("hidden");
+        startTimer(timeLeftOnPause);
+        animateBalls();
+      }
+
+      function exitQuiz() {
+        if (auth.currentUser) {
+          auth.signOut();
+        } else {
+          // Manual reset for guests
+          hideAllModals();
+          quizContainer.classList.add("hidden");
+          showModal(welcomeModal);
+          if (animationFrameId) cancelAnimationFrame(animationFrameId);
+          if (timerId) clearInterval(timerId);
+          currentQuestionIndex = 0;
+          score = 0;
+          correctAnswersCount = 0;
+          incorrectAnswersCount = 0;
+          scoreDisplay.textContent = 0;
+        }
+      }
+
+      pauseButton.addEventListener("click", pauseQuiz);
+      exitButton.addEventListener("click", exitQuiz);
+      resumeButton.addEventListener("click", resumeQuiz);
+      exitFromPauseButton.addEventListener("click", exitQuiz);
+      logoutButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth.signOut();
+      });
+
+      // --- QUIZ GAME LOGIC ---
+      function shuffleArray(array) {
+        // Triple shuffle to increase perceived randomness
+        for (let k = 0; k < 3; k++) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+        }
+      }
+
+      function loadQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+          endQuiz();
+          return;
+        }
+
+        isPaused = false;
+        playerNameDisplay.textContent = playerName;
+        document.getElementById("question-counter").textContent = `Question ${
+          currentQuestionIndex + 1
+        } of ${questions.length}`;
+        feedbackText.textContent = "";
+        ballContainer.innerHTML = "";
+        answersContainerLeft.innerHTML = "";
+        answersContainerRight.innerHTML = "";
+        answeredCorrectly.clear();
+        answeredForQuestion.clear();
+        ballPositions = [];
+        attemptsLeft = 5;
+        attemptsDisplay.textContent = attemptsLeft;
+
+        questionText.textContent = questions[currentQuestionIndex];
+        const shuffledChoices = [...choices[currentQuestionIndex]];
+        shuffleArray(shuffledChoices);
+
+        const numChoices = shuffledChoices.length;
+        const containerWidth = ballContainer.clientWidth;
+        const containerHeight = ballContainer.clientHeight;
+        const ballSize = 60;
+
+        shuffledChoices.forEach((choice, index) => {
+          const button = document.createElement("button");
+          button.textContent = index + 1;
+          button.dataset.choice = choice;
+          button.className =
+            "sphere-button w-12 h-12 rounded-full glassmorphism text-gray-900 font-bold flex items-center justify-center text-center text-sm";
+          button.addEventListener("click", handleChoiceClick);
+          ballContainer.appendChild(button);
+
+          const x = Math.random() * (containerWidth - ballSize);
+          const y = Math.random() * (containerHeight - ballSize);
+          const vx = (Math.random() - 0.5) * 2;
+          const vy = (Math.random() - 0.5) * 2;
+          ballPositions.push({
+            element: button,
+            x,
+            y,
+            vx,
+            vy,
+            radius: ballSize / 2,
+          });
+
+          const choiceTextEl = document.createElement("p");
+          choiceTextEl.textContent = `${index + 1}. ${choice}`;
+          choiceTextEl.className = "text-sm";
+
+          if (index < numChoices / 2) {
+            answersContainerLeft.appendChild(choiceTextEl);
+          } else {
+            answersContainerRight.appendChild(choiceTextEl);
+          }
+        });
+
+        startTimer();
+        animateBalls();
+      }
+
+      function animateBalls() {
+        if (isPaused) return;
+        ballPositions.forEach((ball) => {
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+
+          const containerWidth = ballContainer.clientWidth;
+          const containerHeight = ballContainer.clientHeight;
+          if (ball.x + ball.radius * 2 > containerWidth || ball.x < 0)
+            ball.vx *= -1;
+          if (ball.y + ball.radius * 2 > containerHeight || ball.y < 0)
+            ball.vy *= -1;
+
+          ball.element.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
+        });
+        animationFrameId = requestAnimationFrame(animateBalls);
+      }
+
+      function handleChoiceClick(event) {
+        if (isPaused) return;
+        const button = event.target;
+        const selectedChoice = button.dataset.choice;
+        const currentCorrectAnswers = correctAnswers[currentQuestionIndex];
+
+        if (answeredForQuestion.has(selectedChoice)) return;
+
+        attemptsLeft--;
+        attemptsDisplay.textContent = attemptsLeft;
+        answeredForQuestion.add(selectedChoice);
+
+        if (currentCorrectAnswers.has(selectedChoice)) {
+          button.classList.add("bg-green-500");
+          button.classList.remove("glassmorphism", "text-gray-900");
+          score += 100;
+          correctAnswersCount++;
+          answeredCorrectly.add(selectedChoice);
+        } else {
+          button.classList.add("bg-red-500");
+          button.classList.remove("glassmorphism", "text-gray-900");
+          score -= 100;
+          incorrectAnswersCount++;
+        }
+
+        button.disabled = true;
+        scoreDisplay.textContent = score;
+
+        const allCorrectSelected = [...currentCorrectAnswers].every((answer) =>
+          answeredForQuestion.has(answer)
+        );
+
+        if (
+          (allCorrectSelected &&
+            answeredCorrectly.size === currentCorrectAnswers.size) ||
+          attemptsLeft <= 0
+        ) {
+          feedbackText.textContent = "Correct! You got it all right!";
+          feedbackText.className =
+            "text-center mt-4 text-lg font-medium text-green-400";
+          if (
+            !allCorrectSelected ||
+            answeredCorrectly.size !== currentCorrectAnswers.size
+          ) {
+            feedbackText.textContent =
+              "You ran out of attempts! The correct answers were: " +
+              [...currentCorrectAnswers].join(", ");
+            feedbackText.className =
+              "text-center mt-4 text-lg font-medium text-red-400";
+          }
+          clearInterval(timerId);
+          cancelAnimationFrame(animationFrameId);
+          setTimeout(nextQuestion, 2000);
+        }
+      }
+
+      function startTimer(startTime = 30) {
+        let timeLeft = startTime;
+        timerDisplay.textContent = timeLeft;
+
+        timerId = setInterval(() => {
+          timeLeft--;
+          timeLeftOnPause = timeLeft; // Keep track of time left
+          timerDisplay.textContent = timeLeft;
+          if (timeLeft <= 0) {
+            clearInterval(timerId);
+            cancelAnimationFrame(animationFrameId);
+            feedbackText.textContent =
+              "Time's up! Correct answers: " +
+              [...correctAnswers[currentQuestionIndex]].join(", ");
+            feedbackText.className =
+              "text-center mt-4 text-lg font-medium text-red-400";
+            setTimeout(nextQuestion, 2000);
+          }
+        }, 1000);
+      }
+
+      function nextQuestion() {
+        currentQuestionIndex++;
+        loadQuestion();
+      }
+
+      async function endQuiz() {
+        cancelAnimationFrame(animationFrameId);
+        showModal(endScreenModal);
+        finalScore.querySelector("span").textContent = score;
+        correctCountDisplay.textContent = correctAnswersCount;
+        wrongCountDisplay.textContent = incorrectAnswersCount;
+        await saveScoreToFirebase(playerName, score);
+        await loadHighScoresFromFirebase();
+      }
+
+      async function saveScoreToFirebase(name, score) {
+        try {
+          await db.collection("highscores").add({
+            name: name,
+            score: score,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+          console.log("Score saved successfully!");
+        } catch (error) {
+          console.error("Error writing document: ", error);
+        }
+      }
+
+      async function loadHighScoresFromFirebase() {
+        highScoresList.innerHTML = "<li>Loading...</li>";
+        try {
+          const querySnapshot = await db
+            .collection("highscores")
+            .orderBy("score", "desc")
+            .limit(5)
+            .get();
+          highScores = [];
+          querySnapshot.forEach((doc) => highScores.push(doc.data()));
+
+          highScoresList.innerHTML = "";
+          if (highScores.length === 0) {
+            highScoresList.innerHTML = "<li>No high scores yet!</li>";
+          } else {
+            highScores.forEach((s, index) => {
+              const li = document.createElement("li");
+              li.textContent = `${index + 1}. ${s.name}: ${s.score} pts`;
+              li.className =
+                "bg-white/20 p-2 rounded-full flex items-center justify-center text-center text-sm font-bold float-animation w-28";
+              highScoresList.appendChild(li);
+            });
+          }
+        } catch (error) {
+          console.error("Error loading high scores: ", error);
+          highScoresList.innerHTML = "<li>Could not load scores.</li>";
+        }
+      }
+
+      function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        correctAnswersCount = 0;
+        incorrectAnswersCount = 0;
+        scoreDisplay.textContent = score;
+        hideAllModals();
+        quizContainer.classList.remove("hidden");
+        loadQuestion();
+      }
+
+      playAgainButton.addEventListener("click", restartQuiz);
+    </script>
+  </body>
+</html>
